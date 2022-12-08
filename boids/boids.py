@@ -16,28 +16,34 @@ boid_x_velocities=[random.uniform(0,10.0) for x in range(50)]
 boid_y_velocities=[random.uniform(-20.0,20.0) for x in range(50)]
 boids=(boids_x,boids_y,boid_x_velocities,boid_y_velocities)
 
+
+
+
+
 def update_boids(boids):
-    xs,ys,xvs,yvs=boids
+    # boids_x, boids_y, boid_x_velocities, boid_y_velocities
+    bx,by,bxv,byv=boids
+    number_boids = len(bx)
     # Fly towards the middle
-    for i in range(len(xs)):
-        for j in range(len(xs)):
-            xvs[i]=xvs[i]+(xs[j]-xs[i])*0.01/len(xs)
-    for i in range(len(xs)):
-        for j in range(len(xs)):
-            yvs[i]=yvs[i]+(ys[j]-ys[i])*0.01/len(xs)
+    for i in range(number_boids):
+        for j in range(number_boids):
+            bxv[i]=bxv[i]+(bx[j]-bx[i])*0.01/number_boids
+    for i in range(number_boids):
+        for j in range(number_boids):
+            byv[i]=byv[i]+(by[j]-by[i])*0.01/number_boids
     # Fly away from nearby boids
-    for i in range(len(xs)):
-        for j in range(len(xs)):
-            if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 100:
-                xvs[i]=xvs[i]+(xs[i]-xs[j])
-                yvs[i]=yvs[i]+(ys[i]-ys[j])
+    for i in range(number_boids):
+        for j in range(number_boids):
+            if (bx[j]-bx[i])**2 + (by[j]-by[i])**2 < 100:
+                bxv[i]=bxv[i]+(bx[i]-bx[j])
+                byv[i]=byv[i]+(by[i]-by[j])
     # Try to match speed with nearby boids
-    for i in range(len(xs)):
-        for j in range(len(xs)):
-            if (xs[j]-xs[i])**2 + (ys[j]-ys[i])**2 < 10000:
-                xvs[i]=xvs[i]+(xvs[j]-xvs[i])*0.125/len(xs)
-                yvs[i]=yvs[i]+(yvs[j]-yvs[i])*0.125/len(xs)
+    for i in range(number_boids):
+        for j in range(number_boids):
+            if (bx[j]-bx[i])**2 + (by[j]-by[i])**2 < 10000:
+                bxv[i]=bxv[i]+(bxv[j]-bxv[i])*0.125/number_boids
+                byv[i]=byv[i]+(byv[j]-byv[i])*0.125/number_boids
     # Move according to velocities
-    for i in range(len(xs)):
-        xs[i]=xs[i]+xvs[i]
-        ys[i]=ys[i]+yvs[i]
+    for i in range(number_boids):
+        bx[i]=bx[i]+bxv[i]
+        by[i]=by[i]+byv[i]
